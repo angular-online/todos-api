@@ -1,0 +1,20 @@
+To run the app:
+--------------
+> nodemon server.js
+
+OR 
+
+> node server.js
+
+Export Entire DB:
+-----------------
+mongodump -d <database_name> -o <directory_backup>
+mongodump -d todos -o dbdump
+
+Import Entire DB:
+-----------------
+mongorestore -d <database_name> <directory_backup>
+dbdump>  mongorestore -d todos todos 
+
+Using nodemon in debugging:
+https://github.com/Microsoft/vscode-recipes/tree/master/nodemon
