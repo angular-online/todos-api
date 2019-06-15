@@ -23,7 +23,7 @@ app.use((req, res, next) => {
     next();
 });
 
-mongoose.connect("mongodb://localhost:27017/todos");
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/todos");
 
 mongoose.connection.on('open', function () {
    console.log("Database connected"); 
