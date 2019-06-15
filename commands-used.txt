@@ -18,3 +18,8 @@ dbdump>  mongorestore -d todos todos
 
 Using nodemon in debugging:
 https://github.com/Microsoft/vscode-recipes/tree/master/nodemon
+
+Heroku app
+-----------
+https://todos-api-production.herokuapp.com/
+dbdump> mongorestore -h ds137827.mlab.com:37827 -d heroku_v4zkhqpl -u nagarjuna -p password todos
