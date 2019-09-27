@@ -3,6 +3,8 @@ var mongoose = require('mongoose');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var delay = require('express-delay');
+var swaggerUi = require('swagger-ui-express');
+var swaggerDocument = require('./swagger.json');
 
 var app = new express();
 var TodosRoutes = require('./api/routes/todos');
@@ -41,6 +43,8 @@ app.use(morgan('dev'));
 app.get("/", function(req, res){
     res.send("Welcome to todos-api....!");
 });
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('/todos', TodosRoutes);
 app.use('/categories', CategoryRoutes);

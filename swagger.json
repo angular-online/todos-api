@@ -1,0 +1,231 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Todos REST API"
+  },
+  "host": "localhost:3000",
+  "basePath": "",
+  "tags": [
+    {
+      "name": "Todos",
+      "description": "API for todos"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/todos": {
+      "get": {
+        "tags": [
+          "Todos"
+        ],
+        "summary": "Get all todos from the database",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Todos"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Todos"
+        ],
+        "summary": "Create new todo in database",
+        "parameters": [
+          {
+            "name": "todo",
+            "in": "body",
+            "description": "Todo payload that we want to create",
+            "schema": {
+              "$ref": "#/definitions/NewTodoPayload"
+            },
+            "example": {
+              "title": "test 927",
+              "isCompleted": true,
+              "targetDate": "2019-09-26T18:30:00.000Z",
+              "tags": [
+                "5bd1c78577b8753a98d67e81"
+              ],
+              "category": "5bd1c7771597333a787ef716"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "New todo response format",
+            "schema": {
+              "$ref": "#/definitions/Todos"
+            }
+          }
+        }
+      }
+    },
+    "/todos/{userId}": {
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "description": "ID of user that we want to find",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Todos"
+        ],
+        "summary": "Get user with given ID",
+        "responses": {
+          "200": {
+            "description": "User is found",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete user with given ID",
+        "tags": [
+          "Todos"
+        ],
+        "responses": {
+          "200": {
+            "description": "User is deleted",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update user with give ID",
+        "tags": [
+          "Todos"
+        ],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "User with new values of properties",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User is updated",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Todo": {
+      "properties": {
+        "_id": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "title": {
+          "type": "string"
+        },
+        "isCompleted": {
+          "type": "boolean"
+        },
+        "targetDate": {
+          "type": "string"
+        },
+        "category": {
+          "type": "object",
+          "$ref": "#/definitions/Category"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Tag"
+          }
+        }
+      }
+    },
+    "NewTodoPayload": {
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "targetDate": {
+          "type": "string"
+        },
+        "isCompleted": {
+          "type": "boolean"
+        },
+        "category": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Todos": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Todo"
+      }
+    },
+    "Tag": {
+      "required": [
+        "_id",
+        "name"
+      ],
+      "properties": {
+        "_id": {
+        "type": "string",
+        "uniqueItems": true
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Category": {
+      "required": [
+        "_id",
+        "name"
+      ],
+      "properties": {
+        "_id": {
+        "type": "string",
+        "uniqueItems": true
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
