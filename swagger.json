@@ -10,6 +10,14 @@
     {
       "name": "Todos",
       "description": "API for todos"
+    },
+    {
+      "name": "Categories",
+      "description": "API for categories"
+    },
+    {
+      "name": "Tags",
+      "description": "API for tags"
     }
   ],
   "schemes": [
@@ -30,7 +38,7 @@
         "summary": "Get all todos from the database",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Response will be like below",
             "schema": {
               "$ref": "#/definitions/Todos"
             }
@@ -41,7 +49,7 @@
         "tags": [
           "Todos"
         ],
-        "summary": "Create new todo in database",
+        "summary": "Create new todo with given payload",
         "parameters": [
           {
             "name": "todo",
@@ -49,15 +57,6 @@
             "description": "Todo payload that we want to create",
             "schema": {
               "$ref": "#/definitions/NewTodoPayload"
-            },
-            "example": {
-              "title": "test 927",
-              "isCompleted": true,
-              "targetDate": "2019-09-26T18:30:00.000Z",
-              "tags": [
-                "5bd1c78577b8753a98d67e81"
-              ],
-              "category": "5bd1c7771597333a787ef716"
             }
           }
         ],
@@ -66,21 +65,45 @@
         ],
         "responses": {
           "200": {
-            "description": "New todo response format",
+            "description": "Response will be like below",
             "schema": {
               "$ref": "#/definitions/Todos"
             }
           }
         }
+      },
+      "put": {
+        "summary": "Update todo with given payload",
+        "tags": [
+          "Todos"
+        ],
+        "parameters": [
+          {
+            "name": "Todos",
+            "in": "body",
+            "description": "Todos with updated values",
+            "schema": {
+              "$ref": "#/definitions/UpdateTodoPayload"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated todo call sample response",
+            "schema": {
+              "$ref": "#/definitions/UpdateTodoResponse"
+            }
+          }
+        }
       }
     },
-    "/todos/{userId}": {
+    "/todos/{todoId}": {
       "parameters": [
         {
-          "name": "userId",
+          "name": "todoId",
           "in": "path",
           "required": true,
-          "description": "ID of user that we want to find",
+          "description": "ID of the todo",
           "type": "string"
         }
       ],
@@ -88,50 +111,58 @@
         "tags": [
           "Todos"
         ],
-        "summary": "Get user with given ID",
+        "summary": "Get todo with given ID",
         "responses": {
           "200": {
-            "description": "User is found",
+            "description": "Todo response format",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/Todo"
             }
           }
         }
       },
       "delete": {
-        "summary": "Delete user with given ID",
+        "summary": "Delete todo with given ID",
         "tags": [
           "Todos"
         ],
         "responses": {
           "200": {
-            "description": "User is deleted",
+            "description": "Deleted todo format",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/DeleteTodoResponse"
             }
           }
         }
-      },
-      "put": {
-        "summary": "Update user with give ID",
+      }
+    },
+    "/categories": {
+      "get": {
         "tags": [
-          "Todos"
+          "Categories"
         ],
-        "parameters": [
-          {
-            "name": "user",
-            "in": "body",
-            "description": "User with new values of properties",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        ],
+        "summary": "Get all categories from the database",
         "responses": {
           "200": {
-            "description": "User is updated",
+            "description": "Response will be like below",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/Categories"
+            }
+          }
+        }
+      }
+    },
+    "/tags": {
+      "get": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "Get all tags from the database",
+        "responses": {
+          "200": {
+            "description": "Response will be like below",
+            "schema": {
+              "$ref": "#/definitions/Tags"
             }
           }
         }
@@ -175,7 +206,8 @@
           "type": "string"
         },
         "targetDate": {
-          "type": "string"
+          "type": "string",
+          "format": "date"
         },
         "isCompleted": {
           "type": "boolean"
@@ -189,6 +221,50 @@
             "type": "string"
           }
         }
+      },
+      "example": {
+        "title": "test 927",
+        "isCompleted": true,
+        "targetDate": "2019-09-26T18:30:00.000Z",
+        "tags": [
+          "5bd1c78577b8753a98d67e81"
+        ],
+        "category": "5bd1c7771597333a787ef716"
+      }
+    },
+    "DeleteTodoResponse": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "targetDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "isCompleted": {
+          "type": "boolean"
+        },
+        "category": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "example": {
+        "title": "test 927",
+        "isCompleted": true,
+        "targetDate": "2019-09-26T18:30:00.000Z",
+        "tags": [
+          "5bd1c78577b8753a98d67e81"
+        ],
+        "category": "5bd1c7771597333a787ef716"
       }
     },
     "Todos": {
@@ -196,6 +272,39 @@
       "items": {
         "$ref": "#/definitions/Todo"
       }
+    },
+    "UpdateTodoPayload": {
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "targetDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "isCompleted": {
+          "type": "boolean"
+        },
+        "category": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "example": {"title":"test 9281","isCompleted":false,"targetDate":"2019-09-27T18:30:00.000Z","tags":["5bd1c78577b8753a98d67e81","5bd1c78577b8753a98d67e82"],"category":"5bd1c7771597333a787ef717","id":"5d8ef6c95163d30017f9450d"}
+    },
+    "UpdateTodoResponse": {
+      "example": {"n":1,"nModified":1,"ok":1}
     },
     "Tag": {
       "required": [
@@ -225,6 +334,18 @@
         "name": {
           "type": "string"
         }
+      }
+    },
+    "Categories": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Category"
+      }
+    },
+    "Tags": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Tag"
       }
     }
   }
