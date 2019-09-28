@@ -4,7 +4,7 @@
     "version": "1.0.0",
     "title": "Todos REST API"
   },
-  "host": "todos-api-qa.herokuapp.com",
+  "host": "todos-api-production.herokuapp.com",
   "basePath": "",
   "tags": [
     {
